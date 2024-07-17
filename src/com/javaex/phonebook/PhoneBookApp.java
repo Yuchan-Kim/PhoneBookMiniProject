@@ -56,6 +56,8 @@ public class PhoneBookApp {
 					String[] personInfo = str.split(",");
 					pList.add(new Person(personInfo[0], personInfo[1], personInfo[2]));
 				}
+				
+				//리스트 정보 
 				System.out.println("<1.리스트>");
 
 				for (int i = 0; i < pList.size(); i++) {
@@ -95,9 +97,19 @@ public class PhoneBookApp {
 				try {
 					pList.remove(delIndex);
 					System.out.println("[삭제되었습니다.]");
+					// 파일 업데이트
+                    try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/Users/yuchan/eclipse-workspace/Project_PhoneBook/PhoneDB.txt"), "UTF-8"))) {
+                        for (Person p : pList) {
+                            bw.write(p.getName() + "," + p.getHp() + "," + p.getCompany());
+                            bw.newLine();
+                        }
+                    } catch (IOException e) {
+                        System.out.println("파일을 업데이트 하는 중에 오류가 발생했습니다: " + e.getMessage());
+                    }
 				}catch(IndexOutOfBoundsException e) {
 					System.out.println("에러 발견 (인덱스 범위오류): " + e.getMessage());
 				}
+				
 
 				continue;
 
@@ -126,6 +138,10 @@ public class PhoneBookApp {
 
 			default :
 				System.out.println("[다시 입력해 주세요.]");
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				continue;
 
 			}//switch / case
 		}//While
